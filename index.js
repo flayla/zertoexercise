@@ -38,5 +38,11 @@ function processForm(req, res) {
         if (fields.action == 'Start Listening') {
             filesmover.startListen(fields.source,fields.target);
         }
+        else if (fields.action == 'Stop Listening') {
+            filesmover.stopListen();
+        }
+        else {
+            console.log('Unknown or undefined action!');
+        }
     });
 }
