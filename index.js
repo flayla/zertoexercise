@@ -3,6 +3,9 @@ var formidable = require("formidable");
 var util = require('util');
 const filesmover = require('./filesmover.js')
 
+var status = 'Ready to listen';
+var isListening = false;
+
 console.log('Started.');
 
 var server = http.createServer(function (req, res) {
@@ -29,12 +32,8 @@ function processForm(req, res) {
     var form = new formidable.IncomingForm();
 
     form.parse(req, function (err, fields) {
-        //res.writeHead(200, { 'content-type': 'text/plain' });
-		//res.write(fields.action);
-		res.write('\n\n');
-        res.end(util.inspect({
-            fields: fields,
-        }));
+        //res.end(util.inspect({ fields: fields, }));
+        res.end(displayForm(res));
         if (fields.action == 'Start Listening') {
             filesmover.startListen(fields.source,fields.target);
         }
@@ -42,7 +41,7 @@ function processForm(req, res) {
             filesmover.stopListen();
         }
         else {
-            console.log('Unknown or undefined action!');
+            console.log('Unknown or undefined action.');
         }
     });
 }
