@@ -42,7 +42,7 @@ exports.startListen = function (source,target) {
 }
 
 exports.stopListen = function () {
-    if (typeof watcher !== 'undefined') { watcher.close(); }
+    if (watcher) { watcher.close(); }
     isListen = false;
     status = 'Ready to listen';
     console.log('Stopped Listening!');
