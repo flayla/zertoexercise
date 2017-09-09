@@ -1,10 +1,10 @@
 var fs = require('fs');
 var path = require("path");
 var status = 'Ready to listen';
-var isListen = false;
+var watcher = null;
 
 exports.startListen = function (source,target) {
-    if (isListen == true) {
+    if (watcher) {
         status = 'Already listening, please stop current listen';
         return true;
     }
@@ -18,7 +18,6 @@ exports.startListen = function (source,target) {
                 moveFile(file,source,target);
             });
           })
-        isListen = true;
         status = 'Currently listening to ' + source;
         watcher = fs.watch(source, (eventType, filename) => {
             if(isListen==false) {
@@ -43,7 +42,6 @@ exports.startListen = function (source,target) {
 
 exports.stopListen = function () {
     if (watcher) { watcher.close(); }
-    isListen = false;
     status = 'Ready to listen';
     console.log('Stopped Listening!');
 }
