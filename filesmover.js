@@ -10,11 +10,12 @@ exports.startListen = function (source,target) {
     }
 	if (fs.existsSync(source) && fs.existsSync(target)) {
         console.log('Validated Paths.');
-        console.log('Started Listening...');
+        console.log('Started Listening to source path...');
+        //First go through current files within the source path
         fs.readdir(source, (err, files) => {
             files.forEach(file => {
-              console.log(file);
-              moveFile(file,source,target);
+                console.log(file);
+                moveFile(file,source,target);
             });
           })
         isListen = true;
@@ -24,10 +25,10 @@ exports.startListen = function (source,target) {
                 watcher.close();
                 return true;
             }
-            console.log(`event type is: ${eventType}`);
             if (filename) {
-              console.log(`filename provided: ${filename}`);
-              moveFile(filename,source,target);
+                //There is a file event
+                console.log(`filename provided: ${filename}`);
+                moveFile(filename,source,target);
             } else {
               console.log('filename not provided');
             }
@@ -41,6 +42,7 @@ exports.startListen = function (source,target) {
 }
 
 exports.stopListen = function () {
+    if (typeof watcher !== 'undefined') { watcher.close(); }
     isListen = false;
     status = 'Ready to listen';
     console.log('Stopped Listening!');
@@ -58,17 +60,17 @@ function moveFile (file,source,target) {
 
     if (fs.existsSync(spath)) {
         if (fs.lstatSync(spath).isDirectory()) { 
-            console.log('Ignoring Directory: ' + file);
+            //Recieved a request to move directory, ignoring
             return true;
         }
         fs.rename(spath, tpath,function (err) {
             if (err) console.log(err);
             else console.log('Moved');
-          });
+        });
     }
 }
 
-function timestamp(){
+function timestamp() {
     function pad(n) {return n<10 ? "0"+n : n}
     d=new Date()
     dash="-"
@@ -81,7 +83,7 @@ function timestamp(){
     pad(d.getSeconds())
   }
 
-  function appendToFilename(filename, string){
+function appendToFilename(filename, string) {
     var dotIndex = filename.lastIndexOf(".");
     if (dotIndex == -1) return filename + string;
     else return filename.substring(0, dotIndex) + string + filename.substring(dotIndex);

@@ -2,8 +2,6 @@ var http = require('http');
 var formidable = require("formidable");
 const filesmover = require('./filesmover.js')
 
-console.log('Started.');
-
 var server = http.createServer(function (req, res) {
 	if (req.method.toLowerCase() == 'get') {
 		console.log('Recieved GET');
@@ -16,6 +14,7 @@ var server = http.createServer(function (req, res) {
 });
 
 server.listen(8080);
+console.log('Started HTTP server on port 8080.');
 
 function displayForm (res) {
 	res.writeHead(200, {'Content-Type': 'text/html'});
@@ -27,7 +26,6 @@ function processForm(req, res) {
     var form = new formidable.IncomingForm();
 
     form.parse(req, function (err, fields) {
-        //res.end(util.inspect({ fields: fields, }));
         
         if (fields.action == 'Start Listening') {
             filesmover.startListen(fields.source,fields.target);
