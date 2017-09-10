@@ -7,7 +7,7 @@ Zerto Exercise by Rotem Akerman
  - Adds timestamp to all other extensions (including no extention).
  - GUI on HTTP server (port 8080)
  
-## Usage
+## Install
 `npm install
 
 ## Usage
