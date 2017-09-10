@@ -20,10 +20,6 @@ exports.startListen = function (source,target) {
           })
         status = 'Currently listening to ' + source;
         watcher = fs.watch(source, (eventType, filename) => {
-            if(isListen==false) {
-                watcher.close();
-                return true;
-            }
             if (filename) {
                 //There is a file event
                 console.log(`filename provided: ${filename}`);
